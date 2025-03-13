@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Generator</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo">CodeCraft AI</div>
+      <div class="nav-links">
+        <a href="#" class="nav-link">Home</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1>Code Generator</h1>
+
+      <div class="input-group">
+        <div class="select-wrapper">
+          <select id="language">
+            <option value="Python">Python</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="C++">C++</option>
+            <option value="Java">Java</option>
+          </select>
+          <div class="select-arrow"></div>
+        </div>
+
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="question"
+            placeholder="Enter your question"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <div class="input-focus-effect"></div>
+        </div>
+
+        <button onclick="generateCode()">
+          <span class="button-text">Generate</span>
+          <div class="button-glow"></div>
+        </button>
+      </div>
+
+      <div id="output-container">
+        <div id="output"></div>
+      </div>
+    </div>
+
+    <section id="features" class="features-section">
+      <h2>Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <i class="fas fa-code"></i>
+          <h3>Multiple Languages</h3>
+          <p>Support for Python, JavaScript, Java, and C++</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-bolt"></i>
+          <h3>Fast Generation</h3>
+          <p>Instant code generation powered by AI</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-magic"></i>
+          <h3>Smart Explanations</h3>
+          <p>Detailed explanations for every code snippet</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+      <h2>Contact Us</h2>
+      <div class="contact-form">
+        <input type="text" placeholder="Name" />
+        <input type="email" placeholder="Email" />
+        <textarea placeholder="Message"></textarea>
+        <button class="submit-btn">Send Message</button>
+      </div>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+      </div>
+    </section>
+
+    <div class="background-effects">
+      <div class="glow-effect"></div>
+      <div class="particles"></div>
+    </div>
+
+    <div class="loading-overlay">
+      <div class="loader-container">
+        <div class="loader"></div>
+        <p class="loader-text">Generating code</p>
+      </div>
+    </div>
+
+    <div class="progress-bar"></div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeCraft AI - Smart Code Generator</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-logo">CodeCraft AI</div>
+      <div class="nav-links">
+        <a href="#hero" class="nav-link">Home</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+    </nav>
+
+    <section id="hero" class="hero-section">
+      <div class="hero-content">
+        <h1>Welcome to CodeCraft AI</h1>
+        <p class="hero-subtitle">Your Intelligent Coding Assistant</p>
+        <div class="hero-buttons">
+          <button onclick="window.location.href='/main'" class="primary-btn">
+            Try Generator <i class="fas fa-arrow-right"></i>
+          </button>
+          <button
+            onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})"
+            class="secondary-btn"
+          >
+            Learn More <i class="fas fa-info-circle"></i>
+          </button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <i class="fas fa-code hero-icon"></i>
+      </div>
+    </section>
+
+    <section id="features" class="features-section">
+      <h2>Powerful Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <i class="fas fa-code"></i>
+          <h3>Multiple Languages</h3>
+          <p>Support for Python, JavaScript, Java, and C++</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-bolt"></i>
+          <h3>Fast Generation</h3>
+          <p>Instant code generation powered by AI</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-magic"></i>
+          <h3>Smart Explanations</h3>
+          <p>Detailed explanations for every code snippet</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-brain"></i>
+          <h3>AI Powered</h3>
+          <p>Advanced AI model for accurate code generation</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about-section">
+      <h2>About The Project</h2>
+      <div class="about-content">
+        <div class="about-text">
+          <p>
+            CodeCraft AI is an innovative code generation tool that helps
+            developers, students, and researchers write better code faster.
+            Using advanced AI technology, it can generate code in multiple
+            programming languages and provide detailed explanations.
+          </p>
+          <div class="tech-stack">
+            <h3>Technologies Used:</h3>
+            <div class="tech-icons">
+              <i class="fab fa-python" title="Python"></i>
+              <i class="fab fa-js" title="JavaScript"></i>
+              <i class="fab fa-html5" title="HTML5"></i>
+              <i class="fab fa-css3-alt" title="CSS3"></i>
+              <i class="fab fa-flask" title="Flask"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+      <h2>Contact Us</h2>
+      <div class="contact-container">
+        <div class="contact-info">
+          <h3>Get in Touch</h3>
+          <div class="info-item">
+            <i class="fas fa-envelope"></i>
+            <p>contact@codecraft.ai</p>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-phone"></i>
+            <p>+1 234 567 8900</p>
+          </div>
+          <div class="info-item">
+            <i class="fas fa-location-dot"></i>
+            <p>Tech Hub, Innovation Street</p>
+          </div>
+        </div>
+        <div class="contact-form">
+          <input type="text" placeholder="Name" required />
+          <input type="email" placeholder="Email" required />
+          <textarea placeholder="Message" required></textarea>
+          <button class="submit-btn">Send Message</button>
+        </div>
+      </div>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-logo">CodeCraft AI</div>
+        <p class="footer-text">© 2024 CodeCraft AI. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <div class="background-effects">
+      <div class="glow-effect"></div>
+      <div class="particles"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>
