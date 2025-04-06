@@ -5,3 +5,4 @@ ollama
 deepseek-coder
 flask-socketio
 python-dotenv
+gunicorn
