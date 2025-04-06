@@ -3,146 +3,585 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CodeCraft AI - Smart Code Generator</title>
+    <title>Welcome to CodeGenius</title>
     <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+      :root {
+        --primary: #6366f1;
+        --secondary: #4f46e5;
+        --dark: #0f172a;
+        --darker: #020617;
+      }
+      body {
+        background: linear-gradient(
+            rgba(2, 6, 23, 0.85),
+            rgba(15, 23, 42, 0.85)
+          ),
+          url("https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?q=80&w=2070&auto=format&fit=crop");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+        font-family: "Inter", sans-serif;
+        color: #e2e8f0;
+        position: relative;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at 20% 20%,
+            rgba(99, 102, 241, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(79, 70, 229, 0.15) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+        z-index: -1;
+      }
+      .glass-nav {
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.75rem 0;
+      }
+      .glass-card {
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        transition: all 0.3s ease;
+      }
+      .glass-card:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px 0 rgba(99, 102, 241, 0.25);
+      }
+      .feature-card {
+        background: rgba(15, 23, 42, 0.7);
+        border-radius: 1rem;
+        padding: 2rem;
+        transition: all 0.3s ease;
+      }
+      .feature-card:hover {
+        transform: translateY(-5px);
+        background: rgba(15, 23, 42, 0.8);
+      }
+      .gradient-text {
+        background: linear-gradient(45deg, #6366f1, #8b5cf6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      .floating {
+        animation: float 6s ease-in-out infinite;
+      }
+      .nav-link {
+        position: relative;
+        color: #e2e8f0;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      .btn-primary {
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: 0.5s;
+      }
+      .btn-primary:hover::before {
+        left: 100%;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+      }
+      .gradient-border {
+        position: relative;
+      }
+      .gradient-border::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(45deg, #6366f1, #8b5cf6);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+      .gradient-border:hover::after {
+        transform: scaleX(1);
+      }
+      .feature-icon {
+        font-size: 2.5rem;
+        background: linear-gradient(45deg, #6366f1, #8b5cf6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 1rem;
+      }
+      .scroll-indicator {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: bounce 2s infinite;
+      }
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-20px);
+        }
+        60% {
+          transform: translateY(-10px);
+        }
+      }
+      .code-window {
+        background: rgba(15, 23, 42, 0.95);
+        border-radius: 0.5rem;
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        padding: 1rem;
+        font-family: "Fira Code", monospace;
+      }
+      .typing-effect::after {
+        content: "|";
+        animation: blink 1s infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+      .main-content {
+        padding-top: 6rem;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .hero-section {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 1rem;
+      }
+      @media (max-width: 768px) {
+        .hero-section {
+          padding-top: 8rem;
+        }
+      }
+    </style>
   </head>
-  <body>
-    <nav class="navbar">
-      <div class="nav-logo">CodeCraft AI</div>
-      <div class="nav-links">
-        <a href="#hero" class="nav-link">Home</a>
-        <a href="#features" class="nav-link">Features</a>
-        <a href="#about" class="nav-link">About</a>
-        <a href="#contact" class="nav-link">Contact</a>
-      </div>
-    </nav>
+  <body class="min-h-screen">
+    <div class="min-h-screen flex flex-col">
+      <!-- Navigation -->
+      <nav class="glass-nav fixed w-full z-50 top-0">
+        <div class="container mx-auto px-6 py-2">
+          <div class="flex items-center justify-between">
+            <a
+              href="{{ url_for('index') }}"
+              class="text-3xl font-bold gradient-text"
+              >CodeGenius</a
+            >
+            <div class="hidden md:flex space-x-6">
+              <a href="#features" class="nav-link">Features</a>
+              <a href="#how-it-works" class="nav-link">How it Works</a>
+              <a
+                href="{{ url_for('profession') }}"
+                class="btn-primary text-sm px-6 py-2"
+                >Get Started</a
+              >
+            </div>
+            <button class="md:hidden text-white">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </nav>
 
-    <section id="hero" class="hero-section">
-      <div class="hero-content">
-        <h1>Welcome to CodeCraft AI</h1>
-        <p class="hero-subtitle">Your Intelligent Coding Assistant</p>
-        <div class="hero-buttons">
-          <button onclick="window.location.href='/main'" class="primary-btn">
-            Try Generator <i class="fas fa-arrow-right"></i>
-          </button>
-          <button
-            onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})"
-            class="secondary-btn"
-          >
-            Learn More <i class="fas fa-info-circle"></i>
-          </button>
-        </div>
-      </div>
-      <div class="hero-image">
-        <i class="fas fa-code hero-icon"></i>
-      </div>
-    </section>
-
-    <section id="features" class="features-section">
-      <h2>Powerful Features</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <i class="fas fa-code"></i>
-          <h3>Multiple Languages</h3>
-          <p>Support for Python, JavaScript, Java, and C++</p>
-        </div>
-        <div class="feature-card">
-          <i class="fas fa-bolt"></i>
-          <h3>Fast Generation</h3>
-          <p>Instant code generation powered by AI</p>
-        </div>
-        <div class="feature-card">
-          <i class="fas fa-magic"></i>
-          <h3>Smart Explanations</h3>
-          <p>Detailed explanations for every code snippet</p>
-        </div>
-        <div class="feature-card">
-          <i class="fas fa-brain"></i>
-          <h3>AI Powered</h3>
-          <p>Advanced AI model for accurate code generation</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="about-section">
-      <h2>About The Project</h2>
-      <div class="about-content">
-        <div class="about-text">
-          <p>
-            CodeCraft AI is an innovative code generation tool that helps
-            developers, students, and researchers write better code faster.
-            Using advanced AI technology, it can generate code in multiple
-            programming languages and provide detailed explanations.
+      <!-- Hero Section -->
+      <div class="flex-grow flex items-center justify-center px-4 relative">
+        <div class="text-center max-w-4xl mx-auto" data-aos="fade-up">
+          <h1
+            class="text-5xl md:text-7xl font-bold mb-6 gradient-text"
+            id="typed-text"
+          ></h1>
+          <p class="text-xl text-gray-300 mb-8">
+            Transform your coding experience with AI-powered assistance
           </p>
-          <div class="tech-stack">
-            <h3>Technologies Used:</h3>
-            <div class="tech-icons">
-              <i class="fab fa-python" title="Python"></i>
-              <i class="fab fa-js" title="JavaScript"></i>
-              <i class="fab fa-html5" title="HTML5"></i>
-              <i class="fab fa-css3-alt" title="CSS3"></i>
-              <i class="fab fa-flask" title="Flask"></i>
+          <div class="flex justify-center space-x-4">
+            <a
+              href="{{ url_for('profession') }}"
+              class="btn-primary inline-flex items-center group"
+            >
+              Start Coding
+              <svg
+                class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="scroll-indicator">
+          <svg
+            class="w-6 h-6 animate-bounce"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 14l-7 7m0 0l-7-7m7 7V3"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Features Section -->
+      <div
+        id="features"
+        class="py-20 bg-gradient-to-b from-transparent to-gray-900"
+      >
+        <div class="container mx-auto px-4">
+          <h2
+            class="text-4xl font-bold text-center mb-12 gradient-text"
+            data-aos="fade-up"
+          >
+            Why Choose CodeGenius
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div
+              class="glass-card p-6 rounded-lg"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div class="feature-icon">⚡</div>
+              <h3 class="text-xl font-semibold mb-4">Lightning Fast</h3>
+              <p class="text-gray-400">
+                Get instant code solutions optimized for your needs with minimal
+                waiting time.
+              </p>
+            </div>
+            <div
+              class="glass-card p-6 rounded-lg"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="feature-icon">🎯</div>
+              <h3 class="text-xl font-semibold mb-4">Smart & Precise</h3>
+              <p class="text-gray-400">
+                AI-powered code generation that understands your requirements
+                perfectly.
+              </p>
+            </div>
+            <div
+              class="glass-card p-6 rounded-lg"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
+              <div class="feature-icon">🎨</div>
+              <h3 class="text-xl font-semibold mb-4">Customizable</h3>
+              <p class="text-gray-400">
+                Tailored solutions for students, professors, and professional
+                developers.
+              </p>
             </div>
           </div>
         </div>
       </div>
-    </section>
 
-    <section id="contact" class="contact-section">
-      <h2>Contact Us</h2>
-      <div class="contact-container">
-        <div class="contact-info">
-          <h3>Get in Touch</h3>
-          <div class="info-item">
-            <i class="fas fa-envelope"></i>
-            <p>contact@codecraft.ai</p>
-          </div>
-          <div class="info-item">
-            <i class="fas fa-phone"></i>
-            <p>+1 234 567 8900</p>
-          </div>
-          <div class="info-item">
-            <i class="fas fa-location-dot"></i>
-            <p>Tech Hub, Innovation Street</p>
+      <!-- How it Works Section -->
+      <div id="how-it-works" class="py-20">
+        <div class="container mx-auto px-4">
+          <h2
+            class="text-4xl font-bold text-center mb-12 gradient-text"
+            data-aos="fade-up"
+          >
+            How It Works
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div
+              class="glass-card p-6 rounded-lg text-center"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div class="text-3xl mb-4">1</div>
+              <h3 class="text-xl font-semibold mb-4">Choose Your Role</h3>
+              <p class="text-gray-400">
+                Select whether you're a student, professor, or developer
+              </p>
+            </div>
+            <div
+              class="glass-card p-6 rounded-lg text-center"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="text-3xl mb-4">2</div>
+              <h3 class="text-xl font-semibold mb-4">Pick Your Language</h3>
+              <p class="text-gray-400">
+                Choose from multiple programming languages
+              </p>
+            </div>
+            <div
+              class="glass-card p-6 rounded-lg text-center"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
+              <div class="text-3xl mb-4">3</div>
+              <h3 class="text-xl font-semibold mb-4">Get Your Code</h3>
+              <p class="text-gray-400">
+                Receive optimized code with explanations
+              </p>
+            </div>
           </div>
         </div>
-        <div class="contact-form">
-          <input type="text" placeholder="Name" required />
-          <input type="email" placeholder="Email" required />
-          <textarea placeholder="Message" required></textarea>
-          <button class="submit-btn">Send Message</button>
-        </div>
       </div>
-      <div class="social-links">
-        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
-        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="footer-content">
-        <div class="footer-logo">CodeCraft AI</div>
-        <p class="footer-text">© 2024 CodeCraft AI. All rights reserved.</p>
-      </div>
-    </footer>
-
-    <div class="background-effects">
-      <div class="glow-effect"></div>
-      <div class="particles"></div>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <!-- Chatbot Button -->
+    <div id="chatbotButton" class="fixed bottom-6 right-6 z-50">
+      <button
+        class="w-14 h-14 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg hover:bg-indigo-700 transition-all duration-300"
+        onclick="toggleChat()"
+      >
+        <svg
+          class="w-6 h-6 text-white"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Chatbot Container -->
+    <div
+      id="chatContainer"
+      class="fixed bottom-24 right-6 w-96 glass-card rounded-lg shadow-xl z-50 hidden animate__animated animate__fadeIn"
+    >
+      <div class="p-4 border-b border-gray-700">
+        <h3 class="text-lg font-semibold gradient-text">AI Assistant</h3>
+      </div>
+      <div id="chatMessages" class="h-96 overflow-y-auto p-4 space-y-4"></div>
+      <div class="p-4 border-t border-gray-700">
+        <form id="chatForm" class="flex space-x-2">
+          <input
+            type="text"
+            id="messageInput"
+            class="flex-1 px-4 py-2 rounded-lg glass-card focus:outline-none"
+            placeholder="Ask me anything..."
+          />
+          <button
+            type="submit"
+            class="px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all duration-300"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 1000,
+        once: true,
+      });
+
+      // Initialize Typed.js
+      document.addEventListener("DOMContentLoaded", function () {
+        new Typed("#typed-text", {
+          strings: [
+            "Code Smarter.",
+            "Code Faster.",
+            "Code Better.",
+            "With CodeGenius.",
+          ],
+          typeSpeed: 50,
+          backSpeed: 30,
+          loop: true,
+        });
+      });
+
+      // Smooth scroll
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+
+      // Chatbot functionality
+      function toggleChat() {
+        const chatContainer = document.getElementById("chatContainer");
+        chatContainer.classList.toggle("hidden");
+        if (!chatContainer.classList.contains("hidden")) {
+          document.getElementById("messageInput").focus();
+        }
+      }
+
+      document
+        .getElementById("chatForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const messageInput = document.getElementById("messageInput");
+          const message = messageInput.value.trim();
+
+          if (!message) return;
+
+          addMessage("user", message);
+          messageInput.value = "";
+
+          try {
+            const response = await fetch("/chat", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ message }),
+            });
+
+            const data = await response.json();
+            addMessage("bot", data.response);
+          } catch (error) {
+            addMessage(
+              "bot",
+              "Sorry, I encountered an error. Please try again."
+            );
+          }
+        });
+
+      function addMessage(sender, text) {
+        const chatMessages = document.getElementById("chatMessages");
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `flex ${
+          sender === "user" ? "justify-end" : "justify-start"
+        }`;
+
+        const messageBubble = document.createElement("div");
+        messageBubble.className = `max-w-xs p-3 rounded-lg ${
+          sender === "user" ? "bg-indigo-600 text-white" : "glass-card"
+        }`;
+        messageBubble.textContent = text;
+
+        messageDiv.appendChild(messageBubble);
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+    </script>
   </body>
 </html>

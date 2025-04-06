@@ -3,3 +3,5 @@ requests
 gunicorn
 ollama
 deepseek-coder
+flask-socketio
+python-dotenv

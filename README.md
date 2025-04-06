@@ -1,123 +1,45 @@
-# Code Generation Web App
+# CodeGenius - AI-Powered Code Assistant
 
-## 🚀 Overview
-This is a Flask-based web application that generates code functions based on user prompts using an AI model (e.g., `ollama deepseek-coder`). The app provides a frontend interface where users can input a programming question and receive a function implementation without explanations or extra text.
+A modern web application that helps users generate code using AI, with support for multiple programming languages and user roles.
 
----
+## Features
 
-## 🛠️ Setup Instructions
+- 🚀 Modern UI with glass-morphism design
+- 💻 Support for Python, Java, C, and C++
+- 👥 Role-based code generation (Student, Professor, Developer)
+- 📱 Responsive design for all devices
+- 🔄 Code sharing via Email, GitHub Gist, and WhatsApp
+- 📋 One-click code copying
+- ✨ Beautiful animations and transitions
 
-### 1️⃣ Prerequisites
-Make sure you have the following installed:
-- Python 3.8+
-- Flask
-- Node.js (if additional frontend modifications are needed)
-- [Ollama](https://ollama.com) installed with the `deepseek-coder` model
+## Tech Stack
 
-### 2️⃣ Clone the Repository
-```sh
-git clone <repository-url>
-cd <project-folder>
-```
+- Flask (Python web framework)
+- Tailwind CSS for styling
+- Alpine.js for interactivity
+- Highlight.js for code syntax highlighting
+- Typed.js for text animations
 
-### 3️⃣ Install Dependencies
-```sh
+## Setup
+
+1. Install dependencies:
+
+```bash
 pip install flask
 ```
 
-### 4️⃣ Run the Application
-```sh
+2. Run the application:
+
+```bash
 python app.py
 ```
 
-The Flask app will start, and you can access it in your browser at:
-```
-http://127.0.0.1:5000/
-```
+3. Open http://localhost:5001 in your browser
 
----
+## Contributing
 
-## 📂 Project Structure
-```
-📦 project-folder
-│── 📜 app.py         # Flask backend
-│── 📜 templates/
-│   ├── index.html    # Home page
-│   ├── main.html     # Main content page
-│── 📜 static/
-│   ├── script.js     # Handles frontend interactions
-│   ├── styles.css    # UI styling (if any)
-│── 📜 README.md      # Documentation
-```
+Feel free to submit issues and enhancement requests!
 
----
+## License
 
-## 🎯 Features
-✅ User inputs a programming-related question and selects a language
-✅ AI model (`deepseek-coder`) generates a function implementation
-✅ Ensures only function code is returned, without extra explanations
-✅ Simple and interactive frontend
-
----
-
-## 📌 API Endpoints
-### 1️⃣ **Homepage**
-```
-GET /
-```
-Loads the main `index.html` page.
-
-### 2️⃣ **Main Page**
-```
-GET /main
-```
-Loads `main.html`.
-
-### 3️⃣ **Generate Code**
-```
-POST /generate
-```
-**Request Body (JSON):**
-```json
-{
-  "question": "Find the first non-repeating character in a string",
-  "language": "Python"
-}
-```
-
-**Response (JSON):**
-```json
-{
-  "answer": "def find_first_non_repeating(s): ..."
-}
-```
-
----
-
-## 🛠️ How It Works
-1️⃣ The frontend (`index.html` & `script.js`) takes user input and sends a request to `/generate`.
-2️⃣ `app.py` processes the request and queries `ollama deepseek-coder`.
-3️⃣ AI generates function code, and `app.py` cleans unnecessary text before returning it.
-4️⃣ The cleaned function is displayed on the webpage.
-
----
-
-## 🐞 Troubleshooting
-- **No response from AI?** Ensure `ollama` and the model are correctly installed.
-- **Flask app not running?** Check if another process is using port 5000 or try `flask run`.
-- **Wrong output format?** Ensure `app.py` has the latest regex cleaning function.
-
----
-
-## 🤝 Contributions
-Feel free to submit issues or pull requests to improve this project!
-
----
-
-## 📜 License
-MIT License - Feel free to modify and use this project as needed!
-
----
-
-Happy Coding! 🚀
-
+MIT License

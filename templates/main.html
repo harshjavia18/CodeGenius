@@ -3,120 +3,914 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Code Generator</title>
+    <title>CodeGenius - Your AI Coding Assistant</title>
     <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+    <style>
+      :root {
+        --primary: #6366f1;
+        --secondary: #4f46e5;
+        --dark: #0f172a;
+        --darker: #020617;
+      }
+
+      body {
+        background: linear-gradient(
+            rgba(2, 6, 23, 0.85),
+            rgba(15, 23, 42, 0.85)
+          ),
+          url("https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?q=80&w=2070&auto=format&fit=crop");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+        font-family: "Inter", sans-serif;
+        color: #e2e8f0;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at 20% 20%,
+            rgba(99, 102, 241, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(79, 70, 229, 0.15) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .glass-card {
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        transition: all 0.3s ease;
+      }
+
+      .glass-card:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 0 8px 32px 0 rgba(99, 102, 241, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .selector-container {
+        position: relative;
+        background: rgba(15, 23, 42, 0.8);
+        border-radius: 1rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        animation: fadeInUp 0.5s ease-out;
+      }
+
+      .feature-card {
+        background: rgba(15, 23, 42, 0.7);
+        border-radius: 1rem;
+        padding: 2rem;
+        transition: all 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        background: rgba(15, 23, 42, 0.8);
+      }
+
+      .nav-link {
+        position: relative;
+        color: #e2e8f0;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .gradient-text {
+        background: linear-gradient(45deg, #6366f1, #8b5cf6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .floating {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .typing-dots::after {
+        content: "...";
+        animation: typing 1s infinite;
+      }
+
+      @keyframes typing {
+        0% {
+          content: ".";
+        }
+        33% {
+          content: "..";
+        }
+        66% {
+          content: "...";
+        }
+      }
+    </style>
   </head>
-  <body>
-    <nav class="navbar">
-      <div class="nav-logo">CodeCraft AI</div>
-      <div class="nav-links">
-        <a href="#" class="nav-link">Home</a>
-        <a href="#features" class="nav-link">Features</a>
-        <a href="#contact" class="nav-link">Contact</a>
+  <body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-card">
+      <div class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <h1 class="text-2xl font-bold gradient-text">CodeGenius</h1>
+          </div>
+          <div class="hidden md:flex items-center space-x-8">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#how-it-works" class="nav-link">How it Works</a>
+            <a href="#contact" class="nav-link">Contact</a>
+          </div>
+        </div>
       </div>
     </nav>
 
-    <div class="container">
-      <h1>Code Generator</h1>
-
-      <div class="input-group">
-        <div class="select-wrapper">
-          <select id="language">
-            <option value="Python">Python</option>
-            <option value="JavaScript">JavaScript</option>
-            <option value="C++">C++</option>
-            <option value="Java">Java</option>
-          </select>
-          <div class="select-arrow"></div>
+    <div class="container mx-auto px-4 py-8 mt-20">
+      <div class="max-w-4xl mx-auto space-y-8">
+        <!-- Hero Section -->
+        <div class="text-center animate__animated animate__fadeInDown">
+          <h1
+            class="text-5xl font-bold mb-4 gradient-text"
+            id="typed-text"
+          ></h1>
+          <p class="text-gray-400 text-lg">
+            Get expert code solutions tailored to your needs
+          </p>
         </div>
 
-        <div class="input-wrapper">
+        <!-- Code Generation Section -->
+        <div class="selector-container glass-card">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-4">
+              <label class="block text-lg font-medium mb-2 text-indigo-300"
+                >Your Profession</label
+              >
+              <div class="select-wrapper">
+                <select
+                  id="professionSelect"
+                  class="w-full px-4 py-3 rounded-lg text-base focus:outline-none glass-card"
+                >
+                  <option value="student">Student</option>
+                  <option value="professor">Professor</option>
+                  <option value="developer">Developer</option>
+                </select>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <label class="block text-lg font-medium mb-2 text-indigo-300"
+                >Programming Language</label
+              >
+              <div class="select-wrapper">
+                <select
+                  id="languageSelect"
+                  class="w-full px-4 py-3 rounded-lg text-base focus:outline-none glass-card"
+                >
+                  <option value="python">Python</option>
+                  <option value="java">Java</option>
+                  <option value="c">C</option>
+                  <option value="cpp">C++</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6">
+            <textarea
+              id="questionInput"
+              class="w-full px-4 py-3 rounded-lg text-base focus:outline-none glass-card"
+              rows="4"
+              placeholder="Describe what you want to create..."
+            ></textarea>
+          </div>
+          <div class="mt-4 flex justify-end">
+            <button
+              id="generateBtn"
+              class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2"
+            >
+              <span>Generate Code</span>
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div
+          id="resultsSection"
+          class="space-y-6 hidden animate__animated animate__fadeIn"
+        >
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold gradient-text">Generated Code</h2>
+            <div class="relative" x-data="{ isOpen: false }">
+              <button
+                @click="isOpen = !isOpen"
+                class="btn-primary flex items-center space-x-2 px-4 py-2"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                  />
+                </svg>
+                <span>Share</span>
+              </button>
+
+              <div
+                x-show="isOpen"
+                @click.away="isOpen = false"
+                class="absolute right-0 mt-2 w-48 rounded-md shadow-lg glass-card z-50"
+                x-transition:enter="transition ease-out duration-100"
+                x-transition:enter-start="transform opacity-0 scale-95"
+                x-transition:enter-end="transform opacity-100 scale-100"
+              >
+                <div class="py-1">
+                  <button
+                    onclick="shareViaEmail()"
+                    class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-indigo-600 hover:text-white w-full"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                    Email
+                  </button>
+                  <button
+                    onclick="shareViaGitHub()"
+                    class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-indigo-600 hover:text-white w-full"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-3"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                      />
+                    </svg>
+                    GitHub Gist
+                  </button>
+                  <button
+                    onclick="shareViaWhatsApp()"
+                    class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-indigo-600 hover:text-white w-full"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-3"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                      />
+                    </svg>
+                    WhatsApp
+                  </button>
+                  <button
+                    onclick="copyToClipboard()"
+                    class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-indigo-600 hover:text-white w-full"
+                  >
+                    <svg
+                      class="w-5 h-5 mr-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                      />
+                    </svg>
+                    Copy to Clipboard
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-card p-6 rounded-lg">
+            <pre><code id="codeOutput" class="language-python rounded-lg"></code></pre>
+          </div>
+          <div class="glass-card p-6 rounded-lg">
+            <h3 class="text-xl font-semibold mb-4 text-indigo-300">
+              Explanation
+            </h3>
+            <div id="explanationOutput" class="text-gray-300"></div>
+          </div>
+        </div>
+
+        <!-- Features Section -->
+        <section id="features" class="py-16">
+          <h2 class="text-3xl font-bold text-center mb-12 gradient-text">
+            Why Choose CodeGenius?
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="feature-card">
+              <div class="text-indigo-400 mb-4">
+                <svg
+                  class="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Lightning Fast</h3>
+              <p class="text-gray-400">
+                Get instant code solutions with optimized response times.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="text-indigo-400 mb-4">
+                <svg
+                  class="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Smart & Secure</h3>
+              <p class="text-gray-400">
+                Advanced AI models with secure code generation.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="text-indigo-400 mb-4">
+                <svg
+                  class="w-8 h-8"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Customizable</h3>
+              <p class="text-gray-400">
+                Tailored solutions for students, professors, and developers.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- How it Works Section -->
+        <section id="how-it-works" class="py-16">
+          <h2 class="text-3xl font-bold text-center mb-12 gradient-text">
+            How It Works
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-card p-6 text-center">
+              <div class="text-4xl font-bold text-indigo-400 mb-4">1</div>
+              <h3 class="text-xl font-semibold mb-2">Select Your Role</h3>
+              <p class="text-gray-400">
+                Choose your profession to get tailored code solutions.
+              </p>
+            </div>
+            <div class="glass-card p-6 text-center">
+              <div class="text-4xl font-bold text-indigo-400 mb-4">2</div>
+              <h3 class="text-xl font-semibold mb-2">Describe Your Need</h3>
+              <p class="text-gray-400">
+                Tell us what you want to create or solve.
+              </p>
+            </div>
+            <div class="glass-card p-6 text-center">
+              <div class="text-4xl font-bold text-indigo-400 mb-4">3</div>
+              <h3 class="text-xl font-semibold mb-2">Get Your Solution</h3>
+              <p class="text-gray-400">
+                Receive optimized code with detailed explanations.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16">
+          <h2 class="text-3xl font-bold text-center mb-12 gradient-text">
+            Get in Touch
+          </h2>
+          <div class="glass-card p-8">
+            <form class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium mb-2">Name</label>
+                  <input
+                    type="text"
+                    class="w-full px-4 py-3 rounded-lg glass-card focus:outline-none"
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2">Email</label>
+                  <input
+                    type="email"
+                    class="w-full px-4 py-3 rounded-lg glass-card focus:outline-none"
+                    placeholder="your@email.com"
+                  />
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Message</label>
+                <textarea
+                  class="w-full px-4 py-3 rounded-lg glass-card focus:outline-none"
+                  rows="4"
+                  placeholder="Your message"
+                ></textarea>
+              </div>
+              <div class="flex justify-end">
+                <button
+                  class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-medium transition-all duration-300"
+                >
+                  Send Message
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Chatbot Button -->
+    <div id="chatbotButton" class="fixed bottom-6 right-6 z-50">
+      <button
+        class="w-14 h-14 bg-indigo-600 rounded-full flex items-center justify-center shadow-lg hover:bg-indigo-700 transition-all duration-300"
+        onclick="toggleChat()"
+      >
+        <svg
+          class="w-6 h-6 text-white"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Chatbot Container -->
+    <div
+      id="chatContainer"
+      class="fixed bottom-24 right-6 w-96 glass-card rounded-lg shadow-xl z-50 hidden"
+    >
+      <div class="p-4 border-b border-gray-700">
+        <h3 class="text-lg font-semibold">AI Assistant</h3>
+      </div>
+      <div id="chatMessages" class="h-96 overflow-y-auto p-4 space-y-4"></div>
+      <div class="p-4 border-t border-gray-700">
+        <form id="chatForm" class="flex space-x-2">
           <input
             type="text"
-            id="question"
-            placeholder="Enter your question"
-            autocomplete="off"
-            spellcheck="false"
+            id="messageInput"
+            class="flex-1 px-4 py-2 rounded-lg glass-card focus:outline-none"
+            placeholder="Type your message..."
           />
-          <div class="input-focus-effect"></div>
-        </div>
-
-        <button onclick="generateCode()">
-          <span class="button-text">Generate</span>
-          <div class="button-glow"></div>
-        </button>
-      </div>
-
-      <div id="output-container">
-        <div id="output"></div>
-      </div>
-    </div>
-
-    <section id="features" class="features-section">
-      <h2>Features</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <i class="fas fa-code"></i>
-          <h3>Multiple Languages</h3>
-          <p>Support for Python, JavaScript, Java, and C++</p>
-        </div>
-        <div class="feature-card">
-          <i class="fas fa-bolt"></i>
-          <h3>Fast Generation</h3>
-          <p>Instant code generation powered by AI</p>
-        </div>
-        <div class="feature-card">
-          <i class="fas fa-magic"></i>
-          <h3>Smart Explanations</h3>
-          <p>Detailed explanations for every code snippet</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="contact-section">
-      <h2>Contact Us</h2>
-      <div class="contact-form">
-        <input type="text" placeholder="Name" />
-        <input type="email" placeholder="Email" />
-        <textarea placeholder="Message"></textarea>
-        <button class="submit-btn">Send Message</button>
-      </div>
-      <div class="social-links">
-        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
-        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-      </div>
-    </section>
-
-    <div class="background-effects">
-      <div class="glow-effect"></div>
-      <div class="particles"></div>
-    </div>
-
-    <div class="loading-overlay">
-      <div class="loader-container">
-        <div class="loader"></div>
-        <p class="loader-text">Generating code</p>
+          <button
+            type="submit"
+            class="px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all duration-300"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
+            </svg>
+          </button>
+        </form>
       </div>
     </div>
 
-    <div class="progress-bar"></div>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+      // Initialize Typed.js
+      document.addEventListener("DOMContentLoaded", function () {
+        new Typed("#typed-text", {
+          strings: [
+            "Code Smarter.^1000",
+            "Code Faster.^1000",
+            "Code Better.^1000",
+          ],
+          typeSpeed: 50,
+          backSpeed: 30,
+          loop: true,
+        });
+      });
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+      // Initialize syntax highlighting
+      hljs.highlightAll();
+
+      // Load saved preferences
+      document.addEventListener("DOMContentLoaded", function () {
+        const savedProfession = localStorage.getItem("profession");
+        const savedLanguage = localStorage.getItem("language");
+
+        if (savedProfession) {
+          document.getElementById("professionSelect").value = savedProfession;
+        }
+        if (savedLanguage) {
+          document.getElementById("languageSelect").value = savedLanguage;
+        }
+      });
+
+      // Save preferences on change
+      document
+        .getElementById("professionSelect")
+        .addEventListener("change", function (e) {
+          localStorage.setItem("profession", e.target.value);
+        });
+      document
+        .getElementById("languageSelect")
+        .addEventListener("change", function (e) {
+          localStorage.setItem("language", e.target.value);
+        });
+
+      // Code generation
+      document
+        .getElementById("generateBtn")
+        .addEventListener("click", async function () {
+          const question = document.getElementById("questionInput").value;
+          const language = document.getElementById("languageSelect").value;
+          const profession = document.getElementById("professionSelect").value;
+
+          if (!question) return;
+
+          this.disabled = true;
+          this.innerHTML =
+            '<span>Generating</span><span class="typing-dots"></span>';
+
+          try {
+            const response = await fetch("/generate", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ question, language, profession }),
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+              alert(data.error);
+            } else {
+              document.getElementById("codeOutput").textContent = data.code;
+              document.getElementById("explanationOutput").innerHTML =
+                data.explanation;
+              document
+                .getElementById("resultsSection")
+                .classList.remove("hidden");
+              hljs.highlightAll();
+            }
+          } catch (error) {
+            alert("Error generating code. Please try again.");
+          }
+
+          this.disabled = false;
+          this.innerHTML =
+            '<span>Generate Code</span><svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>';
+        });
+
+      // Chatbot functionality
+      function toggleChat() {
+        const chatContainer = document.getElementById("chatContainer");
+        chatContainer.classList.toggle("hidden");
+        if (!chatContainer.classList.contains("hidden")) {
+          document.getElementById("messageInput").focus();
+        }
+      }
+
+      document
+        .getElementById("chatForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const messageInput = document.getElementById("messageInput");
+          const message = messageInput.value.trim();
+
+          if (!message) return;
+
+          // Add user message
+          addMessage("user", message);
+          messageInput.value = "";
+
+          try {
+            const response = await fetch("/chat", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ message }),
+            });
+
+            const data = await response.json();
+            addMessage("bot", data.response);
+          } catch (error) {
+            addMessage(
+              "bot",
+              "Sorry, I encountered an error. Please try again."
+            );
+          }
+        });
+
+      function addMessage(sender, text) {
+        const chatMessages = document.getElementById("chatMessages");
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `flex ${
+          sender === "user" ? "justify-end" : "justify-start"
+        }`;
+
+        const messageBubble = document.createElement("div");
+        messageBubble.className = `max-w-xs p-3 rounded-lg ${
+          sender === "user" ? "bg-indigo-600 text-white" : "glass-card"
+        }`;
+        messageBubble.textContent = text;
+
+        messageDiv.appendChild(messageBubble);
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // Smooth scroll for navigation
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+
+      function shareViaEmail() {
+        const codeElement = document.getElementById("codeOutput");
+        if (!codeElement || !codeElement.textContent.trim()) {
+          showNotification(
+            "No code to share. Please generate code first.",
+            "error"
+          );
+          return;
+        }
+
+        const code = codeElement.textContent;
+        const subject = "Code Generated from CodeGenius";
+        const body = `Hi,\n\nHere's the code generated by CodeGenius:\n\n${code}\n\nBest regards,\nCodeGenius`;
+
+        // Create a mailto link with proper encoding
+        const mailtoLink = `mailto:?subject=${encodeURIComponent(
+          subject
+        )}&body=${encodeURIComponent(body)}`;
+
+        // Open email client
+        const newWindow = window.open(mailtoLink, "_blank");
+
+        // Check if window was blocked by popup blocker
+        if (
+          !newWindow ||
+          newWindow.closed ||
+          typeof newWindow.closed === "undefined"
+        ) {
+          showNotification("Please allow popups to share via email", "error");
+        }
+      }
+
+      function shareViaGitHub() {
+        const codeElement = document.getElementById("codeOutput");
+        if (!codeElement || !codeElement.textContent.trim()) {
+          showNotification(
+            "No code to share. Please generate code first.",
+            "error"
+          );
+          return;
+        }
+
+        const code = codeElement.textContent;
+        const language = document.getElementById("languageSelect").value;
+        const fileName = `code.${getFileExtension(language)}`;
+
+        // Create a GitHub Gist with proper file extension and language
+        fetch("https://api.github.com/gists", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            description: "Code Generated by CodeGenius",
+            public: true,
+            files: {
+              [fileName]: {
+                content: code,
+                language: getLanguageIdentifier(language),
+              },
+            },
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to create Gist");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.html_url) {
+              window.open(data.html_url, "_blank");
+              showNotification("Code shared on GitHub Gist!", "success");
+            } else {
+              throw new Error("No Gist URL received");
+            }
+          })
+          .catch((error) => {
+            console.error("Error creating gist:", error);
+            showNotification(
+              "Failed to create GitHub Gist. Please try again.",
+              "error"
+            );
+          });
+      }
+
+      function getFileExtension(language) {
+        const extensions = {
+          python: "py",
+          java: "java",
+          c: "c",
+          cpp: "cpp",
+        };
+        return extensions[language] || "txt";
+      }
+
+      function getLanguageIdentifier(language) {
+        const identifiers = {
+          python: "Python",
+          java: "Java",
+          c: "C",
+          cpp: "C++",
+        };
+        return identifiers[language] || "Text";
+      }
+
+      function shareViaWhatsApp() {
+        const codeElement = document.getElementById("codeOutput");
+        if (!codeElement || !codeElement.textContent.trim()) {
+          showNotification(
+            "No code to share. Please generate code first.",
+            "error"
+          );
+          return;
+        }
+
+        const code = codeElement.textContent;
+        const text = `*Generated Code from CodeGenius*\n\n\`\`\`\n${code}\n\`\`\``;
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+          text
+        )}`;
+
+        const newWindow = window.open(whatsappUrl, "_blank");
+        if (
+          !newWindow ||
+          newWindow.closed ||
+          typeof newWindow.closed === "undefined"
+        ) {
+          showNotification(
+            "Please allow popups to share via WhatsApp",
+            "error"
+          );
+        }
+      }
+
+      function copyToClipboard() {
+        const codeElement = document.getElementById("codeOutput");
+        if (!codeElement || !codeElement.textContent.trim()) {
+          showNotification(
+            "No code to copy. Please generate code first.",
+            "error"
+          );
+          return;
+        }
+
+        const code = codeElement.textContent;
+        navigator.clipboard
+          .writeText(code)
+          .then(() => {
+            showNotification("Code copied to clipboard!", "success");
+          })
+          .catch((err) => {
+            console.error("Failed to copy code:", err);
+            showNotification("Failed to copy code. Please try again.", "error");
+          });
+      }
+
+      function showNotification(message, type = "success") {
+        const notification = document.createElement("div");
+        notification.className = `fixed bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg animate__animated animate__fadeIn ${
+          type === "success" ? "bg-green-500" : "bg-red-500"
+        } text-white`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.classList.remove("animate__fadeIn");
+          notification.classList.add("animate__fadeOut");
+          setTimeout(() => notification.remove(), 1000);
+        }, 3000);
+      }
+    </script>
   </body>
 </html>
